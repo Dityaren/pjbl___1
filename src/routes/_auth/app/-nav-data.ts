@@ -1,6 +1,6 @@
 import { ClipboardList, FolderKanban, ListChecks, PieChart, BookOpen } from "lucide-react";
 
-import type { NavItem } from "#/components/shadcn-space/blocks/sidebar-01/nav-main.tsx";
+import type { NavItem } from "#/components/nav-main";
 
 // Adjust hrefs to match your real route files
 export const navData: NavItem[] = [
