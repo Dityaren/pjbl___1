@@ -49,7 +49,7 @@ export function NavUser() {
   const userInfo = (
     <>
       <Avatar className="h-8 w-8 rounded-lg">
-        <AvatarImage src={user.image ?? undefined} alt={user.name} />
+        <AvatarImage src={user.image ?? undefined} alt={user.name} referrerPolicy="no-referrer" />
         <AvatarFallback className="rounded-lg">{getInitials(user.name)}</AvatarFallback>
       </Avatar>
       <div className="grid min-w-0 flex-1 text-left text-sm leading-tight">

@@ -70,7 +70,11 @@ function ProfilPage() {
         <Card className="h-fit shadow-none lg:col-span-1">
           <CardContent className="flex flex-col items-center gap-4 text-center">
             <Avatar className="size-24">
-              <AvatarImage src={user.image ?? undefined} alt={user.name} />
+              <AvatarImage
+                src={user.image ?? undefined}
+                alt={user.name}
+                referrerPolicy="no-referrer"
+              />
               <AvatarFallback className="text-2xl">{getInitials(user.name)}</AvatarFallback>
             </Avatar>
 
