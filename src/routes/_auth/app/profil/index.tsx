@@ -17,7 +17,7 @@ import {
 import { Input } from "#/components/ui/input.tsx";
 import { Label } from "#/components/ui/label.tsx";
 import { authClient } from "#/lib/auth/auth-client";
-import { useAuthSuspense } from "#/lib/auth/hooks";
+import { useAuth } from "#/lib/auth/hooks";
 import { cn } from "#/lib/utils.ts";
 
 export const Route = createFileRoute("/_auth/app/profil/")({
@@ -57,7 +57,7 @@ function FeedbackText({ feedback }: { feedback: Feedback }) {
 }
 
 function ProfilPage() {
-  const { user } = useAuthSuspense();
+  const { user } = useAuth();
 
   if (!user) return null;
 

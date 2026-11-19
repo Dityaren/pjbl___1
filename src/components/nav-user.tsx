@@ -20,7 +20,7 @@ import {
   useSidebar,
 } from "#/components/ui/sidebar.tsx";
 import { authClient } from "#/lib/auth/auth-client";
-import { useAuthSuspense } from "#/lib/auth/hooks";
+import { useAuth } from "#/lib/auth/hooks";
 
 function getInitials(name: string) {
   return name
@@ -32,7 +32,7 @@ function getInitials(name: string) {
 }
 
 export function NavUser() {
-  const { user } = useAuthSuspense();
+  const { user } = useAuth();
   const { isMobile } = useSidebar();
   const navigate = useNavigate();
 

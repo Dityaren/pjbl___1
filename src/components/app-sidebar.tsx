@@ -14,7 +14,7 @@ import {
   SidebarMenu,
   SidebarMenuItem,
 } from "#/components/ui/sidebar.tsx";
-import { useAuthSuspense } from "#/lib/auth/hooks";
+import { useAuth } from "#/lib/auth/hooks";
 
 import { NavItem, NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
@@ -29,7 +29,7 @@ function getInitials(name: string) {
 }
 
 export function AppSidebar({ items }: { items: NavItem[] }) {
-  const { user } = useAuthSuspense();
+  const { user } = useAuth();
 
   return (
     <Sidebar>

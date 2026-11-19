@@ -3,7 +3,7 @@ import { ArrowRight, BookOpen, ClipboardList, FolderKanban, ListChecks } from "l
 
 import { PageHeader } from "#/components/app-main.tsx";
 import { Card, CardDescription, CardHeader, CardTitle } from "#/components/ui/card.tsx";
-import { useAuthSuspense } from "#/lib/auth/hooks";
+import { useAuth } from "#/lib/auth/hooks";
 export const Route = createFileRoute("/_auth/app/")({
   component: BerandaPage,
 });
@@ -36,7 +36,7 @@ const shortcuts = [
 ] as const;
 
 function BerandaPage() {
-  const { user } = useAuthSuspense();
+  const { user } = useAuth();
   const firstName = user?.name?.split(" ")[0];
 
   return (

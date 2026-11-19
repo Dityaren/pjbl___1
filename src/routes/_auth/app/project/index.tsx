@@ -34,6 +34,7 @@ type Project = {
   members: number;
   tasksDone: number;
   tasksTotal: number;
+  thumbnail: string;
 };
 
 // TODO: ganti dengan data asli (loader / query)
@@ -49,6 +50,8 @@ const projects: Project[] = [
     members: 4,
     tasksDone: 3,
     tasksTotal: 8,
+    thumbnail:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8_TrjXiTz8reAEfPQ0fJ0sCtrkxIdkCHwiDzfMzVG5A&s=10",
   },
   {
     id: "2",
@@ -60,6 +63,8 @@ const projects: Project[] = [
     members: 3,
     tasksDone: 6,
     tasksTotal: 10,
+    thumbnail:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8_TrjXiTz8reAEfPQ0fJ0sCtrkxIdkCHwiDzfMzVG5A&s=10",
   },
   {
     id: "3",
@@ -71,6 +76,8 @@ const projects: Project[] = [
     members: 5,
     tasksDone: 6,
     tasksTotal: 6,
+    thumbnail:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8_TrjXiTz8reAEfPQ0fJ0sCtrkxIdkCHwiDzfMzVG5A&s=10",
   },
   {
     id: "4",
@@ -82,6 +89,8 @@ const projects: Project[] = [
     members: 4,
     tasksDone: 0,
     tasksTotal: 7,
+    thumbnail:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8_TrjXiTz8reAEfPQ0fJ0sCtrkxIdkCHwiDzfMzVG5A&s=10",
   },
 ];
 
@@ -219,63 +228,99 @@ function ProjectCard({ project }: { project: Project }) {
 
   return (
     <Card className="h-full shadow-none transition-colors hover:bg-muted/40">
-      <CardContent className="flex h-full flex-col gap-4">
-        <div className="space-y-2">
-          <div className="flex items-start justify-between gap-2">
-            <h3 className="leading-snug font-medium">{project.title}</h3>
-            <Badge className={cn("shrink-0 border-transparent", status.className)}>
-              {status.label}
-            </Badge>
+      <CardContent className="flex h-full gap-3 p-4 sm:gap-4">
+        {/* Thumbnail */}
+        <div className="relative size-20 shrink-0 overflow-hidden rounded-md bg-muted sm:size-24">
+          <div className="flex size-full items-center justify-center">
+            <FolderKanban className="size-7 text-muted-foreground" />
           </div>
-          <p className="line-clamp-2 text-sm text-muted-foreground">{project.description}</p>
+
+          <img
+            src={project.thumbnail}
+            alt={project.title}
+            loading="lazy"
+            className="absolute inset-0 size-full object-cover"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
+          />
         </div>
 
-        {/* Progress */}
-        <div className="space-y-1.5">
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span>Tahap: {project.stage}</span>
-            <span className="font-medium text-foreground">{progress}%</span>
+        {/* Project Content */}
+        <div className="flex min-w-0 flex-1 flex-col gap-3">
+          {/* Header */}
+          <div className="space-y-1.5">
+            <div className="flex min-w-0 flex-wrap items-start justify-between gap-2">
+              <h3 className="min-w-0 flex-1 text-sm leading-snug font-medium sm:text-base">
+                {project.title}
+              </h3>
+
+              <Badge className={cn("shrink-0 border-transparent", status.className)}>
+                {status.label}
+              </Badge>
+            </div>
+
+            <p className="line-clamp-2 text-xs text-muted-foreground sm:text-sm">
+              {project.description}
+            </p>
           </div>
-          <div
-            role="progressbar"
-            aria-valuenow={progress}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            className="h-2 overflow-hidden rounded-full bg-secondary"
-          >
+
+          {/* Progress */}
+          <div className="mt-auto space-y-1.5">
+            <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
+              <span className="truncate">Tahap: {project.stage}</span>
+              <span className="shrink-0 font-medium text-foreground">{progress}%</span>
+            </div>
+
             <div
-              className={cn(
-                "h-full rounded-full transition-all",
-                project.status === "selesai" ? "bg-emerald-500" : "bg-primary",
-              )}
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-        </div>
-
-        <div className="mt-auto flex flex-wrap items-center justify-between gap-3">
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
-            <span className="flex items-center gap-1.5">
-              <ListChecks className="size-3.5" />
-              {project.tasksDone}/{project.tasksTotal} tugas
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Users className="size-3.5" />
-              {project.members} anggota
-            </span>
-            <span className="flex items-center gap-1.5">
-              <CalendarClock className="size-3.5" />
-              {dateFormatter.format(new Date(project.deadline))}
-            </span>
+              role="progressbar"
+              aria-label="Progress project"
+              aria-valuenow={progress}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              className="h-1.5 overflow-hidden rounded-full bg-secondary"
+            >
+              <div
+                className={cn(
+                  "h-full rounded-full transition-all",
+                  project.status === "selesai" ? "bg-emerald-500" : "bg-primary",
+                )}
+                style={{ width: `${progress}%` }}
+              />
+            </div>
           </div>
 
-          <Button size="sm" variant={project.status === "berjalan" ? "default" : "outline"}>
-            {project.status === "berjalan"
-              ? "Lanjutkan"
-              : project.status === "belum"
-                ? "Mulai"
-                : "Lihat"}
-          </Button>
+          {/* Footer */}
+          <div className="flex flex-wrap items-center justify-between gap-2 border-t pt-3">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-muted-foreground">
+              <span className="flex items-center gap-1">
+                <ListChecks className="size-3.5 shrink-0" />
+                {project.tasksDone}/{project.tasksTotal}
+              </span>
+
+              <span className="flex items-center gap-1">
+                <Users className="size-3.5 shrink-0" />
+                {project.members}
+              </span>
+
+              <span className="flex items-center gap-1">
+                <CalendarClock className="size-3.5 shrink-0" />
+                {dateFormatter.format(new Date(project.deadline))}
+              </span>
+            </div>
+
+            <Button
+              size="sm"
+              variant={project.status === "berjalan" ? "default" : "outline"}
+              className="shrink-0"
+            >
+              {project.status === "berjalan"
+                ? "Lanjutkan"
+                : project.status === "belum"
+                  ? "Mulai"
+                  : "Lihat"}
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>
