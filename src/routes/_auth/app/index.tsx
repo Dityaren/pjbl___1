@@ -1,31 +1,69 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, BookOpen, ClipboardList, FolderKanban, ListChecks } from "lucide-react";
 
-import { useAuthSuspense } from "#/lib/auth/hooks.ts";
-
+import { PageHeader } from "#/components/app-main.tsx";
+import { Card, CardDescription, CardHeader, CardTitle } from "#/components/ui/card.tsx";
+import { useAuthSuspense } from "#/lib/auth/hooks";
 export const Route = createFileRoute("/_auth/app/")({
-  component: AppIndex,
+  component: BerandaPage,
 });
 
-function AppIndex() {
+const shortcuts = [
+  {
+    to: "/app/tugas",
+    icon: ClipboardList,
+    title: "Tugas",
+    description: "Lihat tugas dan tenggat pengumpulan.",
+  },
+  {
+    to: "/app/project",
+    icon: FolderKanban,
+    title: "Project",
+    description: "Lanjutkan project belajarmu.",
+  },
+  {
+    to: "/app/materi",
+    icon: BookOpen,
+    title: "Materi",
+    description: "Pelajari materi yang tersedia.",
+  },
+  {
+    to: "/app/quiz",
+    icon: ListChecks,
+    title: "Quiz",
+    description: "Uji pemahamanmu dengan quiz.",
+  },
+] as const;
+
+function BerandaPage() {
   const { user } = useAuthSuspense();
+  const firstName = user?.name?.split(" ")[0];
 
   return (
-    <div className="flex flex-col items-center gap-3 text-center text-sm">
-      <pre className="mb-1 rounded-md border bg-card p-1 text-xs text-card-foreground">
-        _auth/app/index.tsx
-      </pre>
+    <>
+      <PageHeader
+        title={firstName ? `Halo, ${firstName}!` : "Beranda"}
+        description="Semangat Belajar! Lanjutkan dari mana saja."
+      />
 
-      <div>
-        Signed in as:
-        <span className="mt-0.5 block font-mono text-xs">{user?.name}</span>
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {shortcuts.map(({ to, icon: Icon, title, description }) => (
+          <Link key={to} to={to} className="group">
+            <Card className="h-full shadow-none transition-colors group-hover:bg-muted/50">
+              <CardHeader>
+                <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <CardTitle className="flex items-center justify-between">
+                  {title}
+                  <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+                </CardTitle>
+                <CardDescription>{description}</CardDescription>
+              </CardHeader>
+            </Card>
+          </Link>
+        ))}
       </div>
-
-      <div>
-        <p>/app is a protected route under the _auth layout:</p>
-        <pre className="mx-auto mt-0.5 block w-fit rounded-md border bg-card p-1 text-xs text-card-foreground">
-          _auth/route.tsx
-        </pre>
-      </div>
-    </div>
+    </>
   );
 }
