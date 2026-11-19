@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import {
   CalendarClock,
   CheckCircle2,
@@ -13,6 +14,7 @@ import * as React from "react";
 import { PageHeader } from "#/components/app-main.tsx";
 import { Badge } from "#/components/ui/badge.tsx";
 import { Button } from "#/components/ui/button.tsx";
+import { buttonVariants } from "#/components/ui/button.tsx";
 import { Card, CardContent } from "#/components/ui/card.tsx";
 import { Input } from "#/components/ui/input.tsx";
 import { Tabs, TabsList, TabsTrigger } from "#/components/ui/tabs.tsx";
@@ -309,17 +311,23 @@ function ProjectCard({ project }: { project: Project }) {
               </span>
             </div>
 
-            <Button
-              size="sm"
-              variant={project.status === "berjalan" ? "default" : "outline"}
-              className="shrink-0"
+            <Link
+              to="/app/project/$projectId"
+              params={{ projectId: project.id }}
+              className={cn(
+                buttonVariants({
+                  size: "sm",
+                  variant: project.status === "berjalan" ? "default" : "outline",
+                }),
+                "shrink-0",
+              )}
             >
               {project.status === "berjalan"
                 ? "Lanjutkan"
                 : project.status === "belum"
                   ? "Mulai"
                   : "Lihat"}
-            </Button>
+            </Link>
           </div>
         </div>
       </CardContent>
