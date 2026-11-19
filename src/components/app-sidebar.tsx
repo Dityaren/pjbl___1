@@ -3,7 +3,6 @@
 import { PieChart, CircleUserRound, ClipboardList, Table } from "lucide-react";
 
 import Logo from "#/assets/logo/logo";
-import { NavItem, NavMain } from "#/components/shadcn-space/blocks/sidebar-01/nav-main.tsx";
 import { SignOutButton } from "#/components/sign-out-button.tsx";
 import { Avatar, AvatarFallback, AvatarImage } from "#/components/ui/avatar.tsx";
 import { Card, CardContent } from "#/components/ui/card.tsx";
@@ -16,6 +15,9 @@ import {
   SidebarMenuItem,
 } from "#/components/ui/sidebar.tsx";
 import { useAuthSuspense } from "#/lib/auth/hooks";
+
+import { NavItem, NavMain } from "./nav-main";
+import { NavUser } from "./nav-user";
 
 function getInitials(name: string) {
   return name
@@ -64,18 +66,7 @@ export function AppSidebar({ items }: { items: NavItem[] }) {
 
       {/* Footer: user */}
       <SidebarFooter className="border-t px-4 py-3">
-        {user && (
-          <div className="flex items-center gap-3">
-            <Avatar className="h-9 w-9">
-              <AvatarImage src={user.image ?? undefined} alt={user.name} />
-              <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
-            </Avatar>
-            <div className="grid min-w-0 flex-1 text-left leading-tight">
-              <span className="truncate text-sm font-medium">{user.name}</span>
-              <span className="truncate text-xs text-muted-foreground">{user.email}</span>
-            </div>
-          </div>
-        )}
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );
